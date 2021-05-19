@@ -1,15 +1,22 @@
-// const fs = require('fs/promises')
-// const contacts = require('./contacts.json')
+const fs = require('fs').promises
+const contacts = require('./contacts.json')
 
-const listContacts = async () => {}
+const listContacts = async () => {
+  console.log(contacts);
+  return contacts;
 
-const getContactById = async (contactId) => {}
+}
 
-const removeContact = async (contactId) => {}
+const getContactById = async (contactId) => {
+  const contactById = await contacts.find(contact => contact.id.toString() === contactId.toString());
+  return contactById;
+}
 
-const addContact = async (body) => {}
+const removeContact = async (contactId) => { }
 
-const updateContact = async (contactId, body) => {}
+const addContact = async (body) => { }
+
+const updateContact = async (contactId, body) => { }
 
 module.exports = {
   listContacts,

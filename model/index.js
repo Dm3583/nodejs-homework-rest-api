@@ -1,14 +1,19 @@
 const fs = require('fs').promises
-const contacts = require('./contacts.json')
+const contacts = require('./contacts.json');
+
+
+const readData = async () => {
+  const data = await fs.readFile('./contacts.json', 'utf-8');
+  return JSON.parse(data);
+};
 
 const listContacts = async () => {
-  console.log(contacts);
-  return contacts;
+  return await readData();
 
 }
 
 const getContactById = async (contactId) => {
-  const contactById = await contacts.find(contact => contact.id.toString() === contactId.toString());
+  const contactById = await readData().find(contact => contact.id.toString() === contactId.toString());
   return contactById;
 }
 
@@ -24,4 +29,4 @@ module.exports = {
   removeContact,
   addContact,
   updateContact,
-}
+};

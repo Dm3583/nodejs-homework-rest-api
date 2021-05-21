@@ -1,17 +1,21 @@
 const express = require('express')
 const router = express.Router()
-const contacts = require('../../model/index.js');
+const Contacts = require('../../model/index.js');
 
 
 router.get('/', async (req, res, next) => {
-  const list = await contacts.listContacts();
-  res.json({ message: list })
-})
+  try {
+    const contactsList = await Contacts.listContacts();
+    res.json({ status: 'success', code: 200, data: { contactsList } })
+  } catch (e) {
+    next();
+  }
+});
 
 router.get('/:contactId', async (req, res, next) => {
   const { contactId } = req.params;
   // console.log(contactId);
-  const contact = await contacts.getContactById(contactId);
+  const contact = await Contacts.getContactById(contactId);
   res.json({ message: contact })
 })
 

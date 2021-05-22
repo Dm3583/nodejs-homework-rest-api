@@ -1,44 +1,52 @@
 const Joi = require('joi');
 
-const schema = Joi.object({
-    username: Joi.string()
-        .alphanum()
-        .min(3)
+const nameRegExp = '^[-\\s\\.A-Za-z]*$'
+const phoneRegExp = '^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\\s\\.0-9]{7,12}$';
+
+const schemaCreateContact = Joi.object({
+    name: Joi.string()
+        .pattern(new RegExp(nameRegExp))
+        .min(1)
         .max(30)
         .required(),
 
-    password: Joi.string()
-        .pattern(new RegExp('^[a-zA-Z0-9]{3,30}$')),
-
-    repeat_password: Joi.ref('password'),
-
-    access_token: [
-        Joi.string(),
-        Joi.number()
-    ],
-
-    birth_year: Joi.number()
-        .integer()
-        .min(1900)
-        .max(2013),
+    phone: Joi.string()
+        .pattern(new RegExp(phoneRegExp))
+        .required(),
 
     email: Joi.string()
-        .email({ minDomainSegments: 2, tlds: { allow: ['com', 'net'] } })
+        .email({ minDomainSegments: 1, tlds: { allow: true } })
+        .required()
 })
-    .with('username', 'birth_year')
-    .xor('password', 'access_token')
-    .with('password', 'repeat_password');
+    .with('name', ['phone','email']);
 
+const schemaUpdateContact = Joi.object({
+    name: Joi.string()
+        .pattern(new RegExp(nameRegExp))
+        .min(1)
+        .max(30),
 
-schema.validate({ username: 'abc', birth_year: 1994 });
-// -> { value: { username: 'abc', birth_year: 1994 } }
+    phone: Joi.string()
+        .pattern(new RegExp(phoneRegExp )),
 
-schema.validate({});
-// -> { value: {}, error: '"username" is required' }
+    email: Joi.string()
+        .email({ minDomainSegments: 1, tlds: { allow: true } })
+});
 
-// Also -
+const validate = async (schema, obj, next)=>{
+    try {
+        await schema.validateAsync(obj);
+        next();
+    }
+    catch (err) { 
+        next({
+            status: 400,
+            message: err.message.replace(/"/g, '')
+        });
+    };
+};
 
-try {
-    const value = await schema.validateAsync({ username: 'abc', birth_year: 1994 });
-}
-catch (err) { }
+module.exports = {
+    validateCreateContact: (req,res,next)=>validate(schemaCreateContact,req.body,next),
+    validateUpdateContact: (req,res,next)=>validate(schemaUpdateContact,req.body,next)
+};

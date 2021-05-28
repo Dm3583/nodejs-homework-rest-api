@@ -1,43 +1,47 @@
-const fs = require('fs').promises
-const path = require('path');
-const { v4: uuid } = require('uuid');
+const db = require('./db.js');
+const { ObjectId } = require('mongodb');
 
-const readData = async () => {
-  const data = await fs.readFile(path.join(__dirname, './contacts.json'), 'utf-8');
-  return JSON.parse(data);
+const id = (id) => {
+  return new ObjectId(id)
+};
+
+
+const readData = async (db, name) => {
+  const client = await db;
+  const collection = await client.db().collection(name);
+  return collection;
 };
 
 const listContacts = async () => {
-  return await readData();
+  const collection = await readData(db, 'contacts');
+  const results = await collection.find({}).toArray();
+  console.log(results);
+  return results;
 };
 
 const getContactById = async (contactId) => {
-  const data = await readData();
-  const contactById = data.find(contact => contact.id.toString() === contactId.toString());
+  const collection = await readData(db, 'contacts');
+  const [contactById] = await collection.find({ _id: id(contactId) }).toArray();
   return contactById;
 };
 
 const removeContact = async (contactId) => {
-  const data = await readData();
-  const index = data.findIndex(contact => contact.id.toString() === contactId.toString());
-  if (index !== -1) {
-    const deletedContact = data.splice(index, 1);
-    await fs.writeFile(path.join(__dirname, './contacts.json'), JSON.stringify(data, null, 2));
-    return deletedContact;
-  }
-  return null;
+  const collection = await readData(db, 'contacts');
+  const { value: result } = await collection.findOneAndDelete({ _id: id(contactId) })
+  return result
 }
 
 const addContact = async (body) => {
-  const id = uuid();
+  const collection = await readData(db, 'contacts');
   const record = {
-    id,
-    ...body
+    ...body,
+    ...(body.favorite ? {} : { favorite: false })
   };
-  const data = await readData();
-  data.push(record);
-  await fs.writeFile(path.join(__dirname, './contacts.json'), JSON.stringify(data, null, 2));
-  return record;
+  const {
+    ops: [result]
+  } = await collection.insertOne(record);
+
+  return result;
 };
 
 const updateContact = async (contactId, body) => {

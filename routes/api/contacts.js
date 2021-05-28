@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Contacts = require('../../model/index.js');
-const {validateCreateContact,validateUpdateContact} = require('../../validation/contactsValidation.js');
+const { validateCreateContact, validateUpdateContact } = require('../../validation/contactsValidation.js');
 
 router.get('/', async (req, res, next) => {
   try {

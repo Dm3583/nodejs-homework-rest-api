@@ -15,7 +15,6 @@ const readData = async (db, name) => {
 const listContacts = async () => {
   const collection = await readData(db, 'contacts');
   const results = await collection.find({}).toArray();
-  console.log(results);
   return results;
 };
 
@@ -40,20 +39,18 @@ const addContact = async (body) => {
   const {
     ops: [result]
   } = await collection.insertOne(record);
-
   return result;
 };
 
 const updateContact = async (contactId, body) => {
-  const data = await readData();
-  const contactById = data.find(contact => contact.id.toString() === contactId.toString());
-
-  if (contactById) {
-    Object.assign(contactById, body);
-    console.log(contactById);
-    await fs.writeFile(path.join(__dirname, './contacts.json'), JSON.stringify(data, null, 2));
-  }
-  return contactById;
+  const collection = await readData(db, 'contacts');
+  // const contactById = await collection.find({_id: id(contactId)}).toArray();
+  const {value: result}=await collection.findOneAndUpdate(
+    {_id: id(contactId)},
+    {$set: body},
+    {returnOriginal: false}
+  )
+  return result;
 }
 
 module.exports = {

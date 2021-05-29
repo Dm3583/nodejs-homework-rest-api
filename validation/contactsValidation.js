@@ -15,10 +15,11 @@ const schemaCreateContact = Joi.object({
         .required(),
 
     email: Joi.string()
-        .email({ minDomainSegments: 1, tlds: { allow: true } })
-        .required()
+        .email({ minDomainSegments: 1, tlds: { allow: true } }),
+
+    favorite: Joi.boolean()
 })
-    .with('name', ['phone','email']);
+    .with('name', 'phone');
 
 const schemaUpdateContact = Joi.object({
     name: Joi.string()
@@ -30,7 +31,9 @@ const schemaUpdateContact = Joi.object({
         .pattern(new RegExp(phoneRegExp )),
 
     email: Joi.string()
-        .email({ minDomainSegments: 1, tlds: { allow: true } })
+        .email({ minDomainSegments: 1, tlds: { allow: true } }),
+
+    favorite: Joi.boolean()
 });
 
 const validate = async (schema, obj, next)=>{

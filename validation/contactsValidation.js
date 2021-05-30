@@ -1,4 +1,5 @@
 const Joi = require('joi');
+const mongoose = require('mongoose');
 
 const nameRegExp = '^[-\\s\\.A-Za-z]*$'
 const phoneRegExp = '^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\\s\\.0-9]{7,12}$';
@@ -36,6 +37,10 @@ const schemaUpdateContact = Joi.object({
     favorite: Joi.boolean()
 });
 
+const schemaUpdateStatusContact  = Joi.object({
+    favorite: Joi.boolean().required()
+});
+
 const validate = async (schema, obj, next)=>{
     try {
         await schema.validateAsync(obj);
@@ -51,5 +56,15 @@ const validate = async (schema, obj, next)=>{
 
 module.exports = {
     validateCreateContact: (req,res,next)=>validate(schemaCreateContact,req.body,next),
-    validateUpdateContact: (req,res,next)=>validate(schemaUpdateContact,req.body,next)
+    validateUpdateContact: (req,res,next)=>validate(schemaUpdateContact,req.body,next),
+    validateUpdateStatusContact: (req,res,next)=>validate(schemaUpdateStatusContact, req.body,next),
+    validateMongoId: (req, res, next) => {
+        if (!mongoose.Types.ObjectId.isValid(req.params.contactId)) {
+          return next({
+            status: 400,
+            message: 'Invalid ObjectId',
+          });
+        };
+        next();
+      },
 };

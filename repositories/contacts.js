@@ -26,17 +26,15 @@ const updateContact = async (contactId, body) => {
     {...body},
     {new: true}
   );
-  console.log("UPDATE ", result);
   return result;
 };
  
 const updateStatusContact = async (contactId, body)=>{
   const result  = await ContactSchema.findOneAndUpdate(
     {_id: contactId},
-    {...body},
+    {favorite: body.favorite},
     {new: true}
   );
-  console.log("REPO ", result)
   return result;
 };
 

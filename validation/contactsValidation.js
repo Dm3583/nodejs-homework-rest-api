@@ -41,6 +41,18 @@ const schemaUpdateStatusContact  = Joi.object({
     favorite: Joi.boolean().required()
 });
 
+const isMongoIdValid = (req,next) => {
+    {
+        if (!mongoose.Types.ObjectId.isValid(req.params.contactId)) {
+          return next({
+            status: 400,
+            message: 'Invalid ObjectId',
+          });
+        };
+        next();
+    };
+};
+
 const validate = async (schema, obj, next)=>{
     try {
         await schema.validateAsync(obj);
@@ -58,13 +70,5 @@ module.exports = {
     validateCreateContact: (req,res,next)=>validate(schemaCreateContact,req.body,next),
     validateUpdateContact: (req,res,next)=>validate(schemaUpdateContact,req.body,next),
     validateUpdateStatusContact: (req,res,next)=>validate(schemaUpdateStatusContact, req.body,next),
-    validateMongoId: (req, res, next) => {
-        if (!mongoose.Types.ObjectId.isValid(req.params.contactId)) {
-          return next({
-            status: 400,
-            message: 'Invalid ObjectId',
-          });
-        };
-        next();
-      },
+    validateMongoId: (req, res, next) => isMongoIdValid(req,next)
 };

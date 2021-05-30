@@ -39,7 +39,7 @@ const contactSchema = new Schema(
 );
 
 contactSchema.path('name').validate((value)=>{
-    const re = /[A-Z0-9]\w+/g;
+    const re = /[A-Z]\w+/g;
     return re.test(String(value));
 });
 

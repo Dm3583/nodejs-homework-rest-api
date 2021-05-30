@@ -66,7 +66,6 @@ const updateStatusContact = async (req, res, next) => {
       return res.json({ status: 'error', code: 400, message: 'missing field favorite' })
     };
     const contact = await Contacts.updateStatusContact(req.params.contactId, req.body);
-    console.log('HI ',req.body)
     if(contact){
       return res.json({status: 'success', code: 200, data: {contact} })
     }

@@ -1,7 +1,7 @@
 const Joi = require('joi');
 const mongoose = require('mongoose');
 
-const nameRegExp = '^[-\\s\\.A-Za-z]*$'
+const nameRegExp = '^[-\\s\\.A-Za-z]*$';
 const phoneRegExp = '^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\\s\\.0-9]{7,12}$';
 
 const schemaCreateContact = Joi.object({

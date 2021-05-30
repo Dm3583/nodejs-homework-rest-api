@@ -12,7 +12,7 @@ const getContactById = async (contactId) => {
 
 const removeContact = async (contactId) => {
   const  result  = await ContactSchema.findOneAndRemove({ _id: contactId })
-  return result
+  return result;
 };
   
 const addContact = async (body) => {

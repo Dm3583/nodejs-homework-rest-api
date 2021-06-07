@@ -22,3 +22,5 @@ const limiterAPI = {
         });
     },
 };
+
+module.exports = { HttpCode, limiterAPI };

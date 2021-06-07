@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 
 const passwordRegExp = '^[-\\.\\$\\#\\w]*$';
 
-const schemaCreateUser = Joi.object({
+const schemaUser = Joi.object({
 
     email: Joi.string()
         .email({ minDomainSegments: 1, tlds: { allow: true } })
@@ -15,19 +15,20 @@ const schemaCreateUser = Joi.object({
         .max(30)
         .required(),
 
+    subscription: Joi.string()
+        .optional()
+
 })
     .with('email', 'password');
 
 const isMongoIdValid = (req, next) => {
-    {
-        if (!mongoose.Types.ObjectId.isValid(req.params.contactId)) {
-            return next({
-                status: 400,
-                message: 'Invalid ObjectId',
-            });
-        };
-        next();
+    if (!mongoose.Types.ObjectId.isValid(req.params.contactId)) {
+        return next({
+            status: 400,
+            message: 'Invalid ObjectId',
+        });
     };
+    next();
 };
 
 const validate = async (schema, obj, next) => {
@@ -44,6 +45,6 @@ const validate = async (schema, obj, next) => {
 };
 
 module.exports = {
-    validateCreateUser: (req, res, next) => validate(schemaCreateUser, req.body, next),
+    validateUser: (req, res, next) => validate(schemaUser, req.body, next),
     validateMongoId: (req, res, next) => isMongoIdValid(req, next)
 };

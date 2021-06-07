@@ -11,6 +11,12 @@ const HttpCode = {
     INTERNAL_SERVER_ERROR: 500,
 };
 
+const Subscription = {
+    STARTER: "starter",
+    PRO: "pro",
+    BUSINESS: "business"
+};
+
 const limiterAPI = {
     windowMs: 15 * 60 * 1000,
     max: 1000,
@@ -23,4 +29,4 @@ const limiterAPI = {
     },
 };
 
-module.exports = { HttpCode, limiterAPI };
+module.exports = { HttpCode, limiterAPI, Subscription };

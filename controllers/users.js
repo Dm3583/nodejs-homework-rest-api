@@ -58,7 +58,6 @@ const login = async (req, res, next) => {
 const current = async (req, res, next) => {
     try {
         const user = await Users.findByToken(req.user.token);
-        console.log(user);
 
         if (!user) {
             return res.status(HttpCode.UNAUTHORIZED).json({
@@ -69,6 +68,42 @@ const current = async (req, res, next) => {
         };
 
         const { email, subscription } = user;
+
+        return res.status(HttpCode.OK).json({
+            status: 'success',
+            code: HttpCode.OK,
+            data: { email, subscription }
+        });
+    } catch (e) {
+        next(e);
+    };
+};
+
+const updateSubscription = async (req, res, next) => {
+    try {
+        const user = await Users.findByToken(req.user.token);
+
+        if (!user) {
+            return res.status(HttpCode.UNAUTHORIZED).json({
+                status: 'error',
+                code: HttpCode.UNAUTHORIZED,
+                message: 'Not authorized',
+            });
+        };
+
+        if (!req.body?.subscription) {
+            return res.status(HttpCode.BAD_REQUEST).json({
+                status: 'error',
+                code: HttpCode.BAD_REQUEST,
+                message: 'No valid request body',
+            });
+        }
+
+        const { id, email } = user;
+        let { subscription } = user;
+        subscription = req.body.subscription.toLowerCase();
+
+        await Users.updateSubscription(id, subscription);
 
         return res.status(HttpCode.OK).json({
             status: 'success',
@@ -100,4 +135,4 @@ const logout = async (req, res, next) => {
     };
 };
 
-module.exports = { register, login, logout, current };
+module.exports = { register, login, logout, current, updateSubscription };

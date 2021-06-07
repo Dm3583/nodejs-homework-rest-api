@@ -1,10 +1,32 @@
 const ContactSchema = require('../model/contact');
 
-const listContacts = async (userId) => {
-  const results = await ContactSchema.find({ owner: userId }).populate({
-    path: 'owner',
-    select: 'name email phone favorite -_id'
-  });
+const listContacts = async (userId, query) => {
+
+  console.log(query);
+  // const results = await ContactSchema.find({ owner: userId }).populate({
+  //   path: 'owner',
+  //   select: 'name email phone favorite -_id'
+  // });
+  const {
+    page = 1,
+    limit = 5,
+    favorite = null
+  } = query;
+
+  const optionsSearch = { owner: userId };
+  if (favorite !== null) {
+    optionsSearch.favorite = favorite;
+  };
+
+  const results = await ContactSchema.paginate(
+    optionsSearch,
+    {
+      page,
+      limit,
+      populate: { path: 'owner', select: 'name email phone favorite' }
+    }
+  );
+
   return results;
 };
 

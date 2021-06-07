@@ -1,5 +1,6 @@
 const Joi = require('joi');
 const mongoose = require('mongoose');
+const { Subscription } = require('../helpers/constants');
 
 const passwordRegExp = '^[-\\.\\$\\#\\w]*$';
 
@@ -15,11 +16,22 @@ const schemaUser = Joi.object({
         .max(30)
         .required(),
 
-    subscription: Joi.string()
-        .optional()
+    subscription: Joi.string().lowercase()
+        .valid(Subscription.STARTER, Subscription.PRO, Subscription.BUSINESS)
+        .optional(),
+
+    token: Joi.string()
+        .token()
+        .optional(),
 
 })
     .with('email', 'password');
+
+const schemaUpdateUserSubscription = Joi.object({
+    subscription: Joi.string().lowercase()
+        .valid(Subscription.STARTER, Subscription.PRO, Subscription.BUSINESS)
+        .required()
+});
 
 const isMongoIdValid = (req, next) => {
     if (!mongoose.Types.ObjectId.isValid(req.params.contactId)) {
@@ -46,5 +58,6 @@ const validate = async (schema, obj, next) => {
 
 module.exports = {
     validateUser: (req, res, next) => validate(schemaUser, req.body, next),
+    validateUpdateUserSubscription: (req, res, next) => validate(schemaUpdateUserSubscription, req.body, next),
     validateMongoId: (req, res, next) => isMongoIdValid(req, next)
 };

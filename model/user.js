@@ -1,5 +1,6 @@
 const { Schema, model } = require('mongoose');
 const bcrypt = require('bcryptjs');
+const { Subscription } = require('../helpers/constants');
 
 
 // create helpers folder and carry off: SALT_WORK_FACTOR;subscriptionType =["starter", "pro", "business"]
@@ -21,8 +22,8 @@ const userSchema = new Schema({
   },
   subscription: {
     type: String,
-    enum: ["starter", "pro", "business"],
-    default: "starter"
+    enum: [Subscription.STARTER, Subscription.PRO, Subscription.BUSINESS],
+    default: Subscription.STARTER,
   },
   token: {
     type: String,

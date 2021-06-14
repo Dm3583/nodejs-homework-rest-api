@@ -55,7 +55,7 @@ const login = async (req, res, next) => {
         const token = jwt.sign(payload, SECRET_KEY, { expiresIn: '2h' });
 
         await Users.updateToken(id, token);
-        return res.json({
+        return res.status(HttpCode.OK).json({
             status: 'success',
             code: HttpCode.OK,
             data: { token, user: { email, subscription, avatarURL } }
@@ -147,7 +147,6 @@ const logout = async (req, res, next) => {
 
 const avatars = async (req, res, next) => {
 
-
     try {
         if (!req.user?.token) {
             return res.status(HttpCode.UNAUTHORIZED).json({
@@ -168,7 +167,7 @@ const avatars = async (req, res, next) => {
         };
 
         await Users.updateAvatar(id, avatarURL);
-        res.json({
+        res.status(HttpCode.OK).json({
             status: 'success',
             code: HttpCode.OK,
             data: { avatarURL }

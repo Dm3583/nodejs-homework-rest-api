@@ -1,7 +1,9 @@
 const supertest = require('supertest');
 const jwt = require('jsonwebtoken');
 const fs = require('fs/promises');
-const Users = require('../repositories/users')
+const path = require('path');
+const Users = require('../repositories/users');
+require('dotenv').config();
 
 require('dotenv').config();
 
@@ -12,7 +14,7 @@ const User = require('../model/user');
 const { testUser } = require('./data/data');
 
 describe('Test route user avatars', () => {
-    let user, token;
+    let user, token, re;
 
     beforeAll(async () => {
         await db;
@@ -22,9 +24,13 @@ describe('Test route user avatars', () => {
         const issueToken = (payload, secret) => jwt.sign(payload, secret)
         token = issueToken({ id: user._id }, SECRET_KEY)
         await Users.updateToken(user._id, token)
+        re = new RegExp(`^${user._id}\.+avatar.jpg$`);
     });
 
     afterAll(async () => {
+        const avatar = await fs.readdir(path.join('public', process.env.AVATAR_OF_USERS, `${user._id}`));
+        await fs.unlink(path.join('public', process.env.AVATAR_OF_USERS, `${user._id}`, avatar.toString()));
+        await fs.rmdir(path.join('public', process.env.AVATAR_OF_USERS, `${user._id}`));
         const mongo = await db;
         await User.deleteOne({ email: testUser.email });
         await mongo.disconnect();
@@ -39,7 +45,10 @@ describe('Test route user avatars', () => {
             .attach('avatar', buf, 'avatar.jpg')
         expect(response.status).toEqual(200);
         expect(response.body).toBeDefined();
+        expect(response.body.status).toEqual('success');
+        expect(response.body.code).toEqual(200);
         expect(response.body.data.avatarURL).toBeDefined();
+        expect(re.test(response.body.data.avatarURL)).toBeTruthy();
     });
 
     test('Upload user avatar fail token', async () => {

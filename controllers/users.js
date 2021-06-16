@@ -178,4 +178,11 @@ const avatars = async (req, res, next) => {
 
 };
 
-module.exports = { register, login, logout, current, updateSubscription, avatars };
+module.exports = {
+    register,
+    login,
+    logout,
+    current,
+    updateSubscription,
+    avatars
+};

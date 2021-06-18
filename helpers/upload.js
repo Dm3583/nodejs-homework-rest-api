@@ -6,17 +6,35 @@ require('dotenv').config();
 
 const UPLOAD_DIR = process.env.UPLOAD_DIR;
 
-const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-        cb(null, UPLOAD_DIR)
-    },
-    filename: function (req, file, cb) {
-        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-        cb(null, `${uniqueSuffix.toString()}-${file.originalname}`);
+let storage;
 
-    }
-});
+if (process.env.NODE_ENV === 'test') {
+    storage = multer.diskStorage({
 
+        // destination: function (req, file, cb) {
+        //     cb(null, UPLOAD_DIR)
+        // },
+        filename: function (req, file, cb) {
+            const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+            console.log(`${uniqueSuffix.toString()}-${file.originalname}`);
+            cb(null, `${uniqueSuffix.toString()}-${file.originalname}`);
+
+        }
+    });
+} else {
+
+    storage = multer.diskStorage({
+
+        destination: function (req, file, cb) {
+            cb(null, UPLOAD_DIR)
+        },
+        filename: function (req, file, cb) {
+            const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+            cb(null, `${uniqueSuffix.toString()}-${file.originalname}`);
+
+        }
+    });
+};
 const upload = multer({
     storage: storage,
     limits: { fileSize: 2 * 1024 * 1024 },

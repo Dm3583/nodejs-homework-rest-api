@@ -2,7 +2,7 @@ const supertest = require('supertest');
 const jwt = require('jsonwebtoken');
 jest.mock('fs/promises');
 const fs = require('fs/promises');
-const { unlink, access } = jest.requireActual('fs/promises');
+const { unlink, access, rename } = jest.requireActual('fs/promises');
 const path = require('path');
 const Users = require('../repositories/users');
 const Services = require('../services/local-upload');
@@ -40,20 +40,21 @@ describe('Test route user avatars', () => {
         // const buf = await fs.readFile('./test/data/avatar.jpg');
         fs.access.mockReturnValue(Promise.resolve(false));
 
+
         const response = await supertest(app)
             .patch('/api/users/avatars')
             .set('Authorization', `Bearer ${token}`)
             .attach('avatar', './test/data/avatar.jpg')
         // .attach('avatar', buf, 'avatar.jpg')
-
+        // console.log(response);
         expect(response.status).toEqual(200);
         expect(response.body).toBeDefined();
         expect(response.body.status).toEqual('success');
         expect(response.body.code).toEqual(200);
         expect(response.body.data.avatarURL).toBeDefined();
         expect(re.test(response.body.data.avatarURL)).toBeTruthy();
-        // console.log("New path without folder ", response.body.data.avatarURL);
-        // console.log(response.body);
+        console.log("New path without folder ", response.body.data.avatarURL);
+        console.log(response.body);
     });
 
     test('Upload user avatar fail token', async () => {

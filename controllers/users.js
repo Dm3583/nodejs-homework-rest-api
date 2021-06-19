@@ -146,7 +146,7 @@ const logout = async (req, res, next) => {
 };
 
 const avatars = async (req, res, next) => {
-
+    console.log("AVATARS________", req.file)
     try {
         if (!req.user?.token) {
             return res.status(HttpCode.UNAUTHORIZED).json({

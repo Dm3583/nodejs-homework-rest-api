@@ -38,9 +38,9 @@ describe('Test route user avatars', () => {
 
     test('Upload user avatar success', async () => {
         // const buf = await fs.readFile('./test/data/avatar.jpg');
+        // const buf = await fs.readFile.mockReturnValue(Promise.resolve(('./test/data/avatar.jpg')));
         fs.access.mockReturnValue(Promise.resolve(false));
-
-
+        console.log("START______________ ");
         const response = await supertest(app)
             .patch('/api/users/avatars')
             .set('Authorization', `Bearer ${token}`)

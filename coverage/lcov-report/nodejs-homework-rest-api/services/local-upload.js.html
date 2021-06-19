@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">53.85% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>13/13</span>
+                <span class='fraction'>7/13</span>
             </div>
         
             
@@ -37,16 +37,16 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">66.67% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>3/3</span>
+                <span class='fraction'>2/3</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">53.85% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>13/13</span>
+                <span class='fraction'>7/13</span>
             </div>
         
             
@@ -55,7 +55,7 @@
             Press <em>n</em> or <em>j</em> to go to the next uncovered block, <em>b</em>, <em>p</em> or <em>k</em> for the previous block.
         </p>
     </div>
-    <div class='status-line high'></div>
+    <div class='status-line medium'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -84,7 +84,8 @@
 <a name='L25'></a><a href='#L25'>25</a>
 <a name='L26'></a><a href='#L26'>26</a>
 <a name='L27'></a><a href='#L27'>27</a>
-<a name='L28'></a><a href='#L28'>28</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<a name='L28'></a><a href='#L28'>28</a>
+<a name='L29'></a><a href='#L29'>29</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -94,8 +95,8 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -104,10 +105,11 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -120,9 +122,9 @@ class UploadAvatarService {
     constructor(folderAvatars) {
         this.folderAvatars = folderAvatars;
     };
-    async transformAvatar(pathFile) {
-        const picture = await jimp.read(pathFile);
-        await picture
+<span class="fstat-no" title="function not covered" >    as</span>ync transformAvatar(pathFile) {
+        const picture = <span class="cstat-no" title="statement not covered" >await jimp.read(pathFile);</span>
+<span class="cstat-no" title="statement not covered" >        await picture</span>
             .autocrop()
             .cover(250, 250, jimp.HORIZONTAL_ALIGN_CENTER | jimp.VERTICAL_ALIGN_MIDDLE)
             .writeAsync(pathFile);
@@ -131,10 +133,11 @@ class UploadAvatarService {
     async saveAvatar({ idUser, file }) {
 &nbsp;
         await this.transformAvatar(file.path);
-        const folderUserAvatar = path.join(this.folderAvatars, idUser);
-        await createFolderIsNotExist(folderUserAvatar);
-        await fs.rename(file.path, path.join(folderUserAvatar, file.filename));
-        return path.normalize(path.join(idUser, file.filename));
+        const folderUserAvatar = <span class="cstat-no" title="statement not covered" >path.join(this.folderAvatars, idUser);</span>
+<span class="cstat-no" title="statement not covered" >        await createFolderIsNotExist(folderUserAvatar);</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >        await fs.rename(file.path, path.join(folderUserAvatar, file.filename));</span>
+<span class="cstat-no" title="statement not covered" >        return path.normalize(path.join(idUser, file.filename));</span>
     };
 };
 &nbsp;
@@ -145,7 +148,7 @@ module.exports = UploadAvatarService;</pre></td></tr></table></pre>
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Fri Jun 18 2021 10:08:29 GMT-0700 (за північноамериканським тихоокеанським літнім часом)
+                at Sat Jun 19 2021 09:53:37 GMT-0700 (за північноамериканським тихоокеанським літнім часом)
             </div>
         </div>
         <script src="../../prettify.js"></script>

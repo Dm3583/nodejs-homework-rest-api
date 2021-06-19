@@ -18,7 +18,6 @@ const { testUser } = require('./data/data');
 describe('Test route user avatars', () => {
     let user, token, re, file;
 
-
     beforeAll(async () => {
         await db;
         await User.deleteOne({ email: testUser.email });

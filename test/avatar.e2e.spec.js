@@ -54,7 +54,7 @@ describe('Test route user avatars', () => {
 
     test('Upload user avatar fail token', async () => {
         const fakeToken = 'fgjhdgjfghkghlhjkkhdfsghfdgs.sdfgdfsgsfd.sfghfgh';
-        fs.unlink.mockReturnValue(Promise.resolve(false));
+        fs.unlink.mockReturnValue(Promise.resolve(path.join('tmp', file)));
         const buf = await fs.readFile.mockReturnValue(Promise.resolve(('./test/data/avatar.jpg')));
         const response = await supertest(app)
             .patch('/api/users/avatars')

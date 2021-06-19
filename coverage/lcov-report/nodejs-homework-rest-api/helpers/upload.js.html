@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">47.06% </span>
+                <span class="strong">82.35% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>8/17</span>
+                <span class='fraction'>14/17</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">50% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/2</span>
+                <span class='fraction'>1/2</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/3</span>
+                <span class='fraction'>3/3</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">47.06% </span>
+                <span class="strong">82.35% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>8/17</span>
+                <span class='fraction'>14/17</span>
             </div>
         
             
@@ -55,7 +55,7 @@
             Press <em>n</em> or <em>j</em> to go to the next uncovered block, <em>b</em>, <em>p</em> or <em>k</em> for the previous block.
         </p>
     </div>
-    <div class='status-line low'></div>
+    <div class='status-line high'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -100,11 +100,11 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -112,9 +112,9 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -132,22 +132,22 @@ require('dotenv').config();
 const UPLOAD_DIR = process.env.UPLOAD_DIR;
 &nbsp;
 const storage = multer.diskStorage({
-    destination: <span class="fstat-no" title="function not covered" >fu</span>nction (req, file, cb) {
-<span class="cstat-no" title="statement not covered" >        cb(null, UPLOAD_DIR)</span>
+    destination: function (req, file, cb) {
+        cb(null, UPLOAD_DIR)
     },
-    filename: <span class="fstat-no" title="function not covered" >fu</span>nction (req, file, cb) {
-        const uniqueSuffix = <span class="cstat-no" title="statement not covered" >Date.now() + '-' + Math.round(Math.random() * 1E9);</span>
-<span class="cstat-no" title="statement not covered" >        cb(null, `${uniqueSuffix.toString()}-${file.originalname}`);</span>
+    filename: function (req, file, cb) {
+        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+        cb(null, `${uniqueSuffix.toString()}-${file.originalname}`);
     }
 });
 &nbsp;
 const upload = multer({
     storage: storage,
     limits: { fileSize: 2 * 1024 * 1024 },
-    fileFilter: <span class="fstat-no" title="function not covered" >(r</span>eq, file, cb) =&gt; {
-<span class="cstat-no" title="statement not covered" >        if (file.mimetype.includes('image')) {</span>
-<span class="cstat-no" title="statement not covered" >            cb(null, true);</span>
-<span class="cstat-no" title="statement not covered" >            return;</span>
+    fileFilter: (req, file, cb) =&gt; {
+        <span class="missing-if-branch" title="else path not taken" >E</span>if (file.mimetype.includes('image')) {
+            cb(null, true);
+            return;
         };
         const error = <span class="cstat-no" title="statement not covered" >new Error('Wrong format file avatar');</span>
 <span class="cstat-no" title="statement not covered" >        error.status = HttpCode.BAD_REQUEST;</span>
@@ -163,7 +163,7 @@ module.exports = upload;</pre></td></tr></table></pre>
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Sat Jun 19 2021 09:53:37 GMT-0700 (за північноамериканським тихоокеанським літнім часом)
+                at Sat Jun 19 2021 11:50:28 GMT-0700 (за північноамериканським тихоокеанським літнім часом)
             </div>
         </div>
         <script src="../../prettify.js"></script>

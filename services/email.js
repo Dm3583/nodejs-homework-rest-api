@@ -6,13 +6,13 @@ class EmailService {
         this.sender = sender;
         switch (env) {
             case 'development':
-                this.link = 'https://041215088b1f.ngrok.io';
+                this.link = 'https://fb61fad74ccf.ngrok.io';
                 break;
             case 'production':
                 this.link = 'link for production';
                 break;
             default:
-                this.link = 'https://041215088b1f.ngrok.io';
+                this.link = 'https://fb61fad74ccf.ngrok.io';
                 break;
         };
     };
@@ -30,7 +30,7 @@ class EmailService {
                 intro:
                     "Welcome to our System! We're very excited to have you on board.",
                 action: {
-                    instructions: 'To get started with Larysa System, please click here:',
+                    instructions: 'To get started with our System, please click here:',
                     button: {
                         color: '#22BC66', // Optional action button color
                         text: 'Confirm your account',
@@ -49,7 +49,6 @@ class EmailService {
             html: emailHtml,
         };
         console.log('Presend')
-        console.log(msg);
         const result = await this.sender.send(msg);
         console.log(result);
     };

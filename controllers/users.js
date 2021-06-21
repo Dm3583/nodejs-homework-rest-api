@@ -240,7 +240,6 @@ const repeatEmailVerification = async (req, res, next) => {
                     process.env.NODE_ENV,
                     new CreateSenderNodemailer()
                 );
-
                 await emailService.sendVerifyEmail(verifyToken, email);
                 console.log(email, verifyToken, verify)
                 return res.status(HttpCode.OK)
@@ -250,7 +249,6 @@ const repeatEmailVerification = async (req, res, next) => {
                         data: { message: 'Resubmitted successful' },
                     });
             };
-            console.log('USER');
             return res.status(HttpCode.CONFLICT)
                 .json({
                     status: 'error',

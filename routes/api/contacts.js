@@ -1,24 +1,25 @@
-const express = require('express')
-const router = express.Router()
+const express = require('express');
+const router = express.Router();
+const ContactsCtrl = require('../../controllers/contacts.js');
+const guard = require('../../helpers/guard');
 
-router.get('/', async (req, res, next) => {
-  res.json({ message: 'template message' })
-})
+const {
+  validateCreateContact,
+  validateUpdateContact,
+  validateUpdateStatusContact,
+  validateMongoId
+} = require('../../validation/contactsValidation.js');
 
-router.get('/:contactId', async (req, res, next) => {
-  res.json({ message: 'template message' })
-})
+router.get('/', guard, ContactsCtrl.getAllContacts);
 
-router.post('/', async (req, res, next) => {
-  res.json({ message: 'template message' })
-})
+router.get('/:contactId', guard, validateMongoId, ContactsCtrl.getContactById);
 
-router.delete('/:contactId', async (req, res, next) => {
-  res.json({ message: 'template message' })
-})
+router.post('/', guard, validateCreateContact, ContactsCtrl.addContact);
 
-router.patch('/:contactId', async (req, res, next) => {
-  res.json({ message: 'template message' })
-})
+router.delete('/:contactId', guard, validateMongoId, ContactsCtrl.removeContact);
 
-module.exports = router
+router.put('/:contactId', guard, validateMongoId, validateUpdateContact, ContactsCtrl.updateContact);
+
+router.patch('/:contactId/favorite', guard, validateMongoId, validateUpdateStatusContact, ContactsCtrl.updateStatusContact);
+
+module.exports = router;
